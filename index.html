@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>零钱理财 - 新人专属</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    :root {
+      --primary: #1A1A2E;
+      --secondary: #D4AF37;
+      --bg-start: #F8F9FA;
+      --bg-end: #E8E9EB;
+      --text: #2D3436;
+      --text-light: #636E72;
+      --accent-green: #00B894;
+      --accent-red: #FF6B6B;
+      --card-bg: #FFFFFF;
+      --shadow: 0 4px 24px rgba(26, 26, 46, 0.08);
+      --shadow-hover: 0 8px 32px rgba(26, 26, 46, 0.12);
+      --radius: 20px;
+      --radius-sm: 12px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Noto Sans SC', -apple-system, sans-serif;
+      background: linear-gradient(180deg, var(--bg-start) 0%, var(--bg-end) 100%);
+      min-height: 100vh;
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    #root {
+      max-width: 430px;
+      margin: 0 auto;
+      min-height: 100vh;
+      background: var(--card-bg);
+      box-shadow: 0 0 40px rgba(0,0,0,0.05);
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .page {
+      padding: 24px 20px 100px;
+      min-height: 100vh;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .header {
+      text-align: center;
+      padding: 20px 0 32px;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: 2px;
+    }
+
+    .logo span {
+      color: var(--secondary);
+    }
+
+    .slogan {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-top: 8px;
+      letter-spacing: 1px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+      transition: all 0.2s ease;
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-hover);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 16px 24px;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, #2D2D4A 100%);
+      color: white;
+      box-shadow: 0 4px 16px rgba(26, 26, 46, 0.3);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 6px 24px rgba(26, 26, 46, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, var(--secondary) 0%, #C9A227 100%);
+      color: white;
+      box-shadow: 0 4px 16px rgba(212, 175, 55, 0.3);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+
+    .btn-ghost.active, .btn-ghost.selected {
+      background: var(--primary);
+      color: white;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 430px;
+      background: white;
+      display: flex;
+      justify-content: space-around;
+      padding: 12px 0 24px;
+      box-shadow: 0 -4px 24px rgba(0,0,0,0.06);
+      border-radius: 24px 24px 0 0;
+      z-index: 100;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      padding: 8px 16px;
+      border-radius: 12px;
+      transition: all 0.2s ease;
+    }
+
+    .nav-item:active {
+      transform: scale(0.95);
+    }
+
+    .nav-item.active {
+      background: rgba(26, 26, 46, 0.08);
+    }
+
+    .nav-icon {
+      width: 24px;
+      height: 24px;
+      opacity: 0.5;
+      transition: opacity 0.2s;
+    }
+
+    .nav-item.active .nav-icon {
+      opacity: 1;
+    }
+
+    .nav-label {
+      font-size: 11px;
+      color: var(--text-light);
+      font-weight: 500;
+    }
+
+    .nav-item.active .nav-label {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .hero-card {
+      background: linear-gradient(135deg, var(--primary) 0%, #2D2D4A 100%);
+      border-radius: var(--radius);
+      padding: 32px 24px;
+      color: white;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(212,175,55,0.15) 0%, transparent 70%);
+    }
+
+    .hero-title {
+      font-size: 18px;
+      font-weight: 500;
+      opacity: 0.9;
+      margin-bottom: 8px;
+    }
+
+    .hero-amount {
+      font-size: 42px;
+      font-weight: 700;
+      color: var(--secondary);
+      letter-spacing: 1px;
+    }
+
+    .hero-label {
+      font-size: 13px;
+      opacity: 0.7;
+      margin-top: 4px;
+    }
+
+    .profit-tag {
+      display: inline-block;
+      background: rgba(0, 184, 148, 0.15);
+      color: var(--accent-green);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-top: 16px;
+    }
+
+    .quick-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 16px;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    .input-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 16px 20px;
+      border: 2px solid #E8E9EB;
+      border-radius: var(--radius-sm);
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--primary);
+      font-family: inherit;
+      transition: all 0.2s ease;
+      background: #FAFBFC;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: var(--secondary);
+      background: white;
+    }
+
+    .input-field::placeholder {
+      color: #B2BEC3;
+      font-weight: 400;
+    }
+
+    .input-hint {
+      font-size: 12px;
+      color: var(--text-light);
+      margin-top: 8px;
+    }
+
+    .step-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 32px;
+    }
+
+    .step-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #E8E9EB;
+      transition: all 0.3s ease;
+    }
+
+    .step-dot.active {
+      background: var(--secondary);
+      width: 32px;
+      border-radius: 5px;
+    }
+
+    .risk-options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .risk-card {
+      padding: 20px;
+      border: 2px solid #E8E9EB;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .risk-card:hover {
+      border-color: var(--secondary);
+      background: rgba(212, 175, 55, 0.03);
+    }
+
+    .risk-card.selected {
+      border-color: var(--secondary);
+      background: rgba(212, 175, 55, 0.05);
+    }
+
+    .risk-info h4 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .risk-info p {
+      font-size: 13px;
+      color: var(--text-light);
+    }
+
+    .risk-rate {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--secondary);
+    }
+
+    .product-card {
+      padding: 24px;
+      border: 2px solid #E8E9EB;
+      border-radius: var(--radius);
+      margin-bottom: 16px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .product-card:hover {
+      border-color: var(--secondary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+
+    .product-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .product-name {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .product-badge {
+      background: linear-gradient(135deg, var(--accent-green) 0%, #00A385 100%);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .product-rate {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--secondary);
+      margin-bottom: 8px;
+    }
+
+    .product-desc {
+      font-size: 13px;
+      color: var(--text-light);
+    }
+
+    .assets-summary {
+      background: linear-gradient(135deg, var(--primary) 0%, #2D2D4A 100%);
+      border-radius: var(--radius);
+      padding: 32px 24px;
+      color: white;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .assets-summary::before {
+      content: '';
+      position: absolute;
+      top: -30%;
+      left: -30%;
+      width: 60%;
+      height: 60%;
+      background: radial-gradient(circle, rgba(212,175,55,0.2) 0%, transparent 70%);
+    }
+
+    .assets-label {
+      font-size: 14px;
+      opacity: 0.8;
+      margin-bottom: 8px;
+    }
+
+    .assets-total {
+      font-size: 40px;
+      font-weight: 700;
+      color: white;
+    }
+
+    .assets-profit {
+      font-size: 14px;
+      color: var(--accent-green);
+      margin-top: 12px;
+    }
+
+    .asset-list {
+      margin-top: 24px;
+    }
+
+    .asset-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      background: #FAFBFC;
+      border-radius: var(--radius-sm);
+      margin-bottom: 12px;
+    }
+
+    .asset-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .asset-info {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-top: 4px;
+    }
+
+    .asset-amount {
+      text-align: right;
+    }
+
+    .asset-value {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .asset-return {
+      font-size: 13px;
+      color: var(--accent-green);
+      margin-top: 4px;
+    }
+
+    .calc-result {
+      text-align: center;
+      padding: 40px 24px;
+      background: linear-gradient(135deg, rgba(0,184,148,0.08) 0%, rgba(0,184,148,0.02) 100%);
+      border-radius: var(--radius);
+      margin-top: 24px;
+    }
+
+    .calc-label {
+      font-size: 14px;
+      color: var(--text-light);
+      margin-bottom: 8px;
+    }
+
+    .calc-value {
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--accent-green);
+    }
+
+    .calc-note {
+      font-size: 12px;
+      color: var(--text-light);
+      margin-top: 12px;
+    }
+
+    .toast {
+      position: fixed;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary);
+      color: white;
+      padding: 14px 24px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      z-index: 1000;
+      animation: toastIn 0.3s ease;
+    }
+
+    .toast.error {
+      background: var(--accent-red);
+    }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+      to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 24px;
+    }
+
+    .empty-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 24px;
+      opacity: 0.3;
+    }
+
+    .empty-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .empty-desc {
+      font-size: 14px;
+      color: var(--text-light);
+    }
+
+    .match-animation {
+      text-align: center;
+      padding: 60px 24px;
+    }
+
+    .match-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 24px;
+      background: linear-gradient(135deg, var(--accent-green) 0%, #00A385 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: pulse 1.5s ease infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .match-text {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: none;
+      border: none;
+      font-size: 14px;
+      color: var(--text-light);
+      cursor: pointer;
+      padding: 8px 0;
+      margin-bottom: 16px;
+      font-family: inherit;
+    }
+
+    .back-btn:hover {
+      color: var(--primary);
+    }
+
+    .invest-success {
+      text-align: center;
+      padding: 40px 24px;
+    }
+
+    .success-icon {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 24px;
+      background: linear-gradient(135deg, var(--accent-green) 0%, #00A385 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .success-title {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .success-desc {
+      font-size: 14px;
+      color: var(--text-light);
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, createContext, useContext } = React;
+
+    const AppContext = createContext();
+
+    const products = [
+      { id: 1, name: '稳盈宝', rate: 2.8, minAmount: 100, maxAmount: 1000, desc: '本金保障，稳定收益' },
+      { id: 2, name: '增盈宝', rate: 3.5, minAmount: 1001, maxAmount: 3000, desc: '收益升级，风险可控' },
+      { id: 3, name: '智盈宝', rate: 4.2, minAmount: 3001, maxAmount: 5000, desc: '智能匹配，收益优化' }
+    ];
+
+    const riskProducts = {
+      'conservative': [{ id: 1, name: '稳盈宝', rate: 2.8, desc: '本金保障，稳定收益' }],
+      'steady': [
+        { id: 1, name: '稳盈宝', rate: 2.8, desc: '本金保障，稳定收益' },
+        { id: 2, name: '增盈宝', rate: 3.5, desc: '收益升级，风险可控' }
+      ],
+      'balanced': products
+    };
+
+    const mockAssets = [
+      { id: 1, name: '稳盈宝', amount: 2000, profit: 56, rate: 2.8 },
+      { id: 2, name: '增盈宝', amount: 1500, profit: 52.5, rate: 3.5 }
+    ];
+
+    function App() {
+      const [page, setPage] = useState('home');
+      const [toast, setToast] = useState(null);
+      const [assets, setAssets] = useState(mockAssets);
+
+      const showToast = (message, type = 'info') => {
+        setToast({ message, type });
+        setTimeout(() => setToast(null), 2500);
+      };
+
+      return (
+        <AppContext.Provider value={{ page, setPage, showToast, assets, setAssets }}>
+          {toast && (
+            <div className={`toast ${toast.type}`}>
+              {toast.message}
+            </div>
+          )}
+          
+          {page === 'home' && <HomePage />}
+          {page === 'match' && <MatchPage />}
+          {page === 'calculator' && <CalculatorPage />}
+          {page === 'assets' && <AssetsPage />}
+          
+          <BottomNav />
+        </AppContext.Provider>
+      );
+    }
+
+    function BottomNav() {
+      const { page, setPage } = useContext(AppContext);
+      
+      const navItems = [
+        { id: 'home', label: '首页', icon: '🏠' },
+        { id: 'match', label: '理财', icon: '💰' },
+        { id: 'calculator', label: '计算', icon: '🧮' },
+        { id: 'assets', label: '资产', icon: '📊' }
+      ];
+
+      return (
+        <nav className="bottom-nav">
+          {navItems.map(item => (
+            <div 
+              key={item.id}
+              className={`nav-item ${page === item.id ? 'active' : ''}`}
+              onClick={() => setPage(item.id)}
+            >
+              <span className="nav-icon">{item.icon}</span>
+              <span className="nav-label">{item.label}</span>
+            </div>
+          ))}
+        </nav>
+      );
+    }
+
+    function HomePage() {
+      const { setPage, assets } = useContext(AppContext);
+      
+      const totalAssets = assets.reduce((sum, a) => sum + a.amount, 0);
+      const totalProfit = assets.reduce((sum, a) => sum + a.profit, 0);
+
+      return (
+        <div className="page">
+          <header className="header">
+            <div className="logo">零钱<span>宝</span></div>
+            <div className="slogan">新人零钱理财 · 轻松开启财富之路</div>
+          </header>
+
+          <div className="hero-card">
+            <div className="hero-title">今日收益</div>
+            <div className="hero-amount">¥{totalProfit.toFixed(2)}</div>
+            <div className="hero-label">累计收益 ¥{totalProfit.toFixed(2)}</div>
+            <div className="profit-tag">+0.12% 本日</div>
+          </div>
+
+          <div className="quick-actions">
+            <button className="btn btn-primary" onClick={() => setPage('match')}>
+              立即理财
+            </button>
+            <button className="btn btn-secondary" onClick={() => setPage('assets')}>
+              查看资产
+            </button>
+          </div>
+
+          <div className="card" style={{ marginTop: 24 }}>
+            <h3 className="section-title">热门产品</h3>
+            {products.slice(0, 2).map(p => (
+              <div key={p.id} className="product-card" style={{ cursor: 'default' }}>
+                <div className="product-header">
+                  <span className="product-name">{p.name}</span>
+                  <span className="product-badge">{p.rate}% 年化</span>
+                </div>
+                <div className="product-desc">{p.desc}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    function MatchPage() {
+      const { setPage, showToast, assets, setAssets } = useContext(AppContext);
+      const [step, setStep] = useState(1);
+      const [amount, setAmount] = useState('');
+      const [risk, setRisk] = useState('');
+      const [matchedProducts, setMatchedProducts] = useState([]);
+      const [investing, setInvesting] = useState(false);
+      const [investSuccess, setInvestSuccess] = useState(false);
+
+      const getAvailableProducts = (amt) => {
+        if (!amt || amt < 100) return [];
+        if (amt <= 1000) return [products[0]];
+        if (amt <= 3000) return products.slice(0, 2);
+        return products;
+      };
+
+      const handleAmountNext = () => {
+        const num = parseInt(amount);
+        if (!num || num < 100 || num > 5000) {
+          showToast('请输入100-5000元之间的金额', 'error');
+          return;
+        }
+        setMatchedProducts(getAvailableProducts(num));
+        setStep(2);
+      };
+
+      const handleRiskSelect = (riskType) => {
+        setRisk(riskType);
+        setStep(3);
+      };
+
+      const handleInvest = (product) => {
+        const num = parseInt(amount);
+        setInvesting(true);
+        
+        setTimeout(() => {
+          setAssets([...assets, {
+            id: Date.now(),
+            name: product.name,
+            amount: num,
+            profit: (num * product.rate / 100).toFixed(2),
+            rate: product.rate
+          }]);
+          setInvesting(false);
+          setInvestSuccess(true);
+        }, 1500);
+      };
+
+      const handleReset = () => {
+        setStep(1);
+        setAmount('');
+        setRisk('');
+        setMatchedProducts([]);
+        setInvestSuccess(false);
+      };
+
+      if (investSuccess) {
+        return (
+          <div className="page">
+            <div className="invest-success">
+              <div className="success-icon">
+                <span style={{ fontSize: 36 }}>✓</span>
+              </div>
+              <div className="success-title">投资成功！</div>
+              <div className="success-desc">您的 {products.find(p => p.name === matchedProducts[0]?.name)?.name} 已成功买入</div>
+              <button className="btn btn-primary" style={{ marginTop: 32 }} onClick={() => { handleReset(); setPage('assets'); }}>
+                查看我的资产
+              </button>
+              <button className="btn btn-ghost" style={{ marginTop: 12 }} onClick={handleReset}>
+                继续投资
+              </button>
+            </div>
+          </div>
+        );
+      }
+
+      if (investing) {
+        return (
+          <div className="page">
+            <div className="match-animation">
+              <div className="match-icon">
+                <span style={{ fontSize: 36, color: 'white' }}>💰</span>
+              </div>
+              <div className="match-text">正在匹配最优产品...</div>
+            </div>
+          </div>
+        );
+      }
+
+      return (
+        <div className="page">
+          {step > 1 && step < 3 && (
+            <button className="back-btn" onClick={() => setStep(step - 1)}>
+              ← 返回上一步
+            </button>
+          )}
+          
+          <div className="step-indicator">
+            <div className={`step-dot ${step >= 1 ? 'active' : ''}`}></div>
+            <div className={`step-dot ${step >= 2 ? 'active' : ''}`}></div>
+            <div className={`step-dot ${step >= 3 ? 'active' : ''}`}></div>
+          </div>
+
+          {step === 1 && (
+            <>
+              <h2 className="section-title">输入投资金额</h2>
+              <div className="card">
+                <div className="input-group">
+                  <label className="input-label">我想投资</label>
+                  <input
+                    type="number"
+                    className="input-field"
+                    placeholder="100"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                  />
+                  <div className="input-hint">金额范围：100 - 5000 元</div>
+                </div>
+                <button className="btn btn-primary" onClick={handleAmountNext}>
+                  下一步
+                </button>
+              </div>
+            </>
+          )}
+
+          {step === 2 && (
+            <>
+              <h2 className="section-title">选择风险偏好</h2>
+              <div className="risk-options">
+                {[
+                  { key: 'conservative', label: '保守型', desc: '追求稳定，不愿承担风险', rate: '2.8%' },
+                  { key: 'steady', label: '稳健型', desc: '平衡收益与风险', rate: '3.5%' },
+                  { key: 'balanced', label: '平衡型', desc: '愿意承担一定风险追求更高收益', rate: '4.2%' }
+                ].map(item => (
+                  <div
+                    key={item.key}
+                    className={`risk-card ${risk === item.key ? 'selected' : ''}`}
+                    onClick={() => handleRiskSelect(item.key)}
+                  >
+                    <div className="risk-info">
+                      <h4>{item.label}</h4>
+                      <p>{item.desc}</p>
+                    </div>
+                    <div className="risk-rate">{item.rate}</div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+
+          {step === 3 && (
+            <>
+              <h2 className="section-title">为您推荐</h2>
+              {matchedProducts.map(p => (
+                <div key={p.id} className="product-card" onClick={() => handleInvest(p)}>
+                  <div className="product-header">
+                    <span className="product-name">{p.name}</span>
+                    <span className="product-badge">{p.rate}% 年化</span>
+                  </div>
+                  <div className="product-rate">{p.rate}%</div>
+                  <div className="product-desc">{p.desc}</div>
+                  <button className="btn btn-primary" style={{ marginTop: 16 }}>
+                    一键投资
+                  </button>
+                </div>
+              ))}
+            </>
+          )}
+        </div>
+      );
+    }
+
+    function CalculatorPage() {
+      const { showToast } = useContext(AppContext);
+      const [principal, setPrincipal] = useState('');
+      const [months, setMonths] = useState('');
+      const [rate, setRate] = useState(2.8);
+      const [result, setResult] = useState(null);
+
+      const calculate = () => {
+        const p = parseInt(principal);
+        const m = parseInt(months);
+        
+        if (!p || p < 100 || p > 5000) {
+          showToast('请输入100-5000元之间的金额', 'error');
+          return;
+        }
+        if (!m || m < 1 || m > 36) {
+          showToast('请输入1-36个月', 'error');
+          return;
+        }
+
+        const profit = (p * rate / 100 / 12 * m).toFixed(2);
+        setResult(profit);
+      };
+
+      return (
+        <div className="page">
+          <h2 className="section-title">收益计算器</h2>
+          
+          <div className="card">
+            <div className="input-group">
+              <label className="input-label">投资本金（元）</label>
+              <input
+                type="number"
+                className="input-field"
+                placeholder="1000"
+                value={principal}
+                onChange={(e) => { setPrincipal(e.target.value); setResult(null); }}
+              />
+            </div>
+
+            <div className="input-group">
+              <label className="input-label">投资期限</label>
+              <select 
+                className="input-field"
+                value={months}
+                onChange={(e) => { setMonths(e.target.value); setResult(null); }}
+                style={{ fontSize: 18 }}
+              >
+                <option value="">选择月数</option>
+                {[1,2,3,6,12,18,24,36].map(m => (
+                  <option key={m} value={m}>{m} 个月</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="input-group">
+              <label className="input-label">年化利率</label>
+              <select 
+                className="input-field"
+                value={rate}
+                onChange={(e) => { setRate(parseFloat(e.target.value)); setResult(null); }}
+                style={{ fontSize: 18 }}
+              >
+                <option value="2.8">稳盈宝 2.8%</option>
+                <option value="3.5">增盈宝 3.5%</option>
+                <option value="4.2">智盈宝 4.2%</option>
+              </select>
+            </div>
+
+            <button className="btn btn-primary" onClick={calculate}>
+              计算收益
+            </button>
+          </div>
+
+          {result && (
+            <div className="calc-result">
+              <div className="calc-label">预期收益</div>
+              <div className="calc-value">¥{result}</div>
+              <div className="calc-note">
+                本金 {principal} 元 × {months} 个月 × {rate}% 年化
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    function AssetsPage() {
+      const { assets } = useContext(AppContext);
+      
+      const totalAssets = assets.reduce((sum, a) => sum + a.amount, 0);
+      const totalProfit = assets.reduce((sum, a) => sum + parseFloat(a.profit), 0);
+
+      return (
+        <div className="page">
+          <h2 className="section-title">我的资产</h2>
+
+          <div className="assets-summary">
+            <div className="assets-label">总资产</div>
+            <div className="assets-total">¥{totalAssets.toLocaleString()}</div>
+            <div className="assets-profit">累计收益 +¥{totalProfit.toFixed(2)}</div>
+          </div>
+
+          <div className="asset-list">
+            <h3 className="section-title" style={{ fontSize: 16 }}>持有产品</h3>
+            {assets.length === 0 ? (
+              <div className="empty-state">
+                <div className="empty-icon">📭</div>
+                <div className="empty-title">暂无持仓</div>
+                <div className="empty-desc">开始您的第一笔投资吧</div>
+              </div>
+            ) : (
+              assets.map(asset => (
+                <div key={asset.id} className="asset-item">
+                  <div>
+                    <div className="asset-name">{asset.name}</div>
+                    <div className="asset-info">{asset.rate}% 年化</div>
+                  </div>
+                  <div className="asset-amount">
+                    <div className="asset-value">¥{asset.amount.toLocaleString()}</div>
+                    <div className="asset-return">+¥{asset.profit}</div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
